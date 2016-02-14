@@ -7,11 +7,11 @@ Simple Java library to encode / decode tick data time series using delta compres
 
 ### Types supported
 
-* Long (variable bit length)
+* Long
 * Date
+* Decimal (fixed decimal point)
 
 
 ### TODO
 * Store data definition in a header block
 * Non delta field
-* Float (with fixed number of decimals)

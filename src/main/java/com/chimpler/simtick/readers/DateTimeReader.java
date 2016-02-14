@@ -18,7 +18,6 @@ public class DateTimeReader extends Reader<DateTime> {
     @Override
     public DateTime readRaw(byte[] buffer, int offset) {
         this.oldValue = longCodec.readRawValue(buffer, offset);
-        System.out.println("R========> " + (oldValue * divFactor));
         return new DateTime(this.oldValue * this.divFactor);
     }
 
