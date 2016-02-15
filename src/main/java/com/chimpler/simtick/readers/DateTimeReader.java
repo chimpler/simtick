@@ -10,9 +10,9 @@ public class DateTimeReader extends Reader<DateTime> {
 
     public DateTimeReader(int deltaValues, boolean isMillis) {
         this.divFactor = isMillis ? 1 : 1000;
-        int deltaBits = (int) Math.ceil(Math.log(deltaValues));
-        int rawBits = isMillis ? 32 : 24;
-        this.longCodec = new LongCodec(rawBits, deltaBits, true, true);
+        this.deltaBits = (int) Math.ceil(Math.log(deltaValues));
+        this.rawBits = isMillis ? 32 : 24;
+        this.longCodec = new LongCodec(this.rawBits, this.deltaBits, true, true);
     }
 
     @Override

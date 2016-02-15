@@ -5,13 +5,25 @@ simtick
 
 Simple Java library to encode / decode tick data time series using delta compression.
 
+### Features
+
+Feature                                 | Status
+----------------------------------------| :----:
+Schema in header block                  | :x:
+Partitioning                            | :x:
+Auto discovery of delta encoding params | :x:
+Codec command line tool                 | :x:
+
 ### Types supported
 
-* Long
-* Date
-* Decimal (fixed decimal point)
-
-
-### TODO
-* Store data definition in a header block
-* Non delta field
+Type                           | Status
+-------------------------------| :----:
+Long (fixed)                   | :x:
+Long (delta)                   | :white_check_mark:
+Fixed decimal point (delta)    | :white_check_mark:
+Fixed decimal point (fixed)    | :x:
+Joda DateTime (delta)          | :white_check_mark:
+Joda DateTime (fixed)          | :x:
+Fixed length string (fixed)    | :x:
+Variable length string (fixed) | :x:
+Enum (fixed)                   | :x:

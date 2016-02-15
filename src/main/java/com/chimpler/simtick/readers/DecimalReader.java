@@ -8,6 +8,8 @@ public class DecimalReader extends Reader<Double> {
     private double divFactor;
 
     public DecimalReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta, int decimalMark) {
+        this.rawBits = rawBits;
+        this.deltaBits = deltaBits;
         this.divFactor = (int)Math.pow(10, decimalMark);
         this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
     }

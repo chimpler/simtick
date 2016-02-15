@@ -17,7 +17,7 @@ public class DateTimeReaderWriterTest {
         DateTime later = now.plusSeconds(2);
         writer.writeRaw(buffer, now, 1);
         writer.writeDelta(buffer, later, 15);
-
+        System.out.printf("=======> " + reader.readRaw(buffer, 1));
         assert reader.readRaw(buffer, 1) == now;
         assert reader.readDelta(buffer, 15) == later;
     }

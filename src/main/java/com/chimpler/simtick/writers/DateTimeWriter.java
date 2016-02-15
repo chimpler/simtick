@@ -24,8 +24,6 @@ public class DateTimeWriter extends Writer<DateTime> {
     @Override
     public int writeRaw(byte[] buffer, DateTime value, int offset) {
         long newTimestamp = value.getMillis() / divFactor;
-        System.out.println("W========> " + newTimestamp);
-        System.out.println(new DateTime(newTimestamp * 1000L));
         return longCodec.writeRawValue(buffer, newTimestamp, offset);
     }
 

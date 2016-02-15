@@ -7,6 +7,8 @@ public class LongReader extends Reader<Long> {
     private Long oldValue;
 
     public LongReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta) {
+        this.rawBits = rawBits;
+        this.deltaBits = deltaBits;
         this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
     }
 
