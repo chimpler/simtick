@@ -11,8 +11,8 @@ public class DateTimeWriter extends Writer<DateTime> {
 
     public DateTimeWriter(int deltaValues, boolean isMillis) {
         this.divFactor = isMillis ? 1 : 1000;
-        int deltaBits = (int) Math.ceil(Math.log(deltaValues));
-        int rawBits = isMillis ? 32 : 24;
+        int deltaBits = (int) Math.ceil(Math.log(deltaValues) / Math.log(2));
+        int rawBits = 32;
         this.longCodec = new LongCodec(rawBits, deltaBits, true, true);
     }
 
@@ -23,14 +23,14 @@ public class DateTimeWriter extends Writer<DateTime> {
 
     @Override
     public int writeRaw(byte[] buffer, DateTime value, int offset) {
-        long newTimestamp = value.getMillis() / divFactor;
-        return longCodec.writeRawValue(buffer, newTimestamp, offset);
+        this.oldValue =  value.getMillis() / divFactor;
+        return longCodec.writeRawValue(buffer, oldValue, offset);
     }
 
     @Override
     public int writeDelta(byte[] buffer, DateTime value, int offset) {
-        long oldTimestamp = oldValue / divFactor;
-        long newTimestamp = value.getMillis() / divFactor;
-        return longCodec.writeDeltaValue(buffer, newTimestamp - oldTimestamp, offset);
+        long delta = value.getMillis() / divFactor - this.oldValue;
+        this.oldValue += delta;
+        return longCodec.writeDeltaValue(buffer, delta, offset);
     }
 }

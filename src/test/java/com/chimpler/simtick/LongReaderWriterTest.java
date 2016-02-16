@@ -7,7 +7,7 @@ import org.junit.Test;
 public class LongReaderWriterTest {
     @Test
     public void testLongReaderWriter() {
-        long value = 1455418551L;
+        long value = 1455595658L;
         long delta = 2;
         byte[] buffer = new byte[100];
         LongReader reader = new LongReader(32, 2, true, true);
