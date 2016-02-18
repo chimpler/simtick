@@ -1,10 +1,6 @@
 package com.chimpler.simtick.readers;
 
 import com.chimpler.simtick.codec.BitCodec;
-import com.chimpler.simtick.readers.Reader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimTickReader {
     private Reader[] readers;

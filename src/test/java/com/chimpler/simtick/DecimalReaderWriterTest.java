@@ -14,7 +14,7 @@ public class DecimalReaderWriterTest {
         DecimalWriter writer = new DecimalWriter(32, 8, true, true, 3);
         writer.writeRaw(buffer, value, 1);
         writer.writeDelta(buffer, value + delta, 50);
-        assert reader.readRaw(buffer, 1) == value;
-        assert reader.readDelta(buffer, 50) == value + delta;
+        assert(reader.readRaw(buffer, 1) == value);
+        assert(reader.readDelta(buffer, 50) == value + delta);
     }
 }
