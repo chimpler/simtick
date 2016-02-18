@@ -56,9 +56,9 @@ public class SimTickReaderWriterTest {
         offset += writer.write(buffer, row2, offset);
         writer.write(buffer, row3, offset);
 
-        Object[] resultRow1 = new Object[2];
-        Object[] resultRow2 = new Object[2];
-        Object[] resultRow3 = new Object[2];
+        Object[] resultRow1 = new Object[3];
+        Object[] resultRow2 = new Object[3];
+        Object[] resultRow3 = new Object[3];
 
         offset = 1;
         offset += reader.read(buffer, offset, resultRow1);
