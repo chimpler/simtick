@@ -31,7 +31,6 @@ findbugs {
 }
 
 pmd {
-    toolVersion = "5.4.1"
     ignoreFailures = false
     sourceSets = [sourceSets.main]
     reportsDir = file("$project.buildDir/reports/pmd")
