@@ -9,9 +9,9 @@ public class DateTimeWriter extends Writer<DateTime> {
     private Long oldValue = Long.MAX_VALUE;
     private int divFactor;
 
-    public DateTimeWriter(int deltaValues, boolean isMillis) {
+    public DateTimeWriter(int maxDeltaValues, boolean isMillis) {
         this.divFactor = isMillis ? 1 : 1000;
-        int deltaBits = (int) Math.ceil(Math.log(deltaValues) / Math.log(2));
+        int deltaBits = (int) Math.ceil(Math.log(maxDeltaValues) / Math.log(2));
         int rawBits = 32;
         this.longCodec = new LongCodec(rawBits, deltaBits, true, true);
     }

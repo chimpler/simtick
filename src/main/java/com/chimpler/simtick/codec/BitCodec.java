@@ -13,7 +13,7 @@ public class BitCodec {
     public void write(byte[] array, long value, int pos, int len) {
         for (int i = 0; i < len; i++) {
             // 32 max length + 7 so it doesn't become negative
-            array[(i + pos) / 8] |= (byte) ((value >> (len - i - 1)) & 0x1) << (((39 - pos % 8 - i)) % 8);
+            array[(i + pos) / 8] |= (byte) ((value >> (len - i - 1)) & 0x1) << ((39 - pos % 8 - i) % 8);
         }
     }
 
