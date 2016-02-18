@@ -2,6 +2,8 @@ group 'com.chimpler'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
 
 sourceCompatibility = 1.6
 
@@ -19,4 +21,18 @@ test {
         // Show that tests are run in the command-line output
         events 'started', 'passed'
     }
+}
+
+findbugs {
+  ignoreFailures = true
+  toolVersion = "2.0.1"
+  sourceSets = [sourceSets.main]
+  reportsDir = file("$project.buildDir/reports/findbugs")
+  effort = "max"
+}
+
+pmd {
+  ignoreFailures = false
+  sourceSets = [sourceSets.main]
+  reportsDir = file("$project.buildDir/reports/pmd")
 }

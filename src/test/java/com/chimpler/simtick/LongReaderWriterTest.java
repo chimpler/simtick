@@ -4,6 +4,8 @@ import com.chimpler.simtick.readers.LongReader;
 import com.chimpler.simtick.writers.LongWriter;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 public class LongReaderWriterTest {
     @Test
     public void testLongReaderWriter() {
@@ -15,7 +17,7 @@ public class LongReaderWriterTest {
         writer.writeRaw(buffer, value, 1);
         writer.writeDelta(buffer, value + delta, 33);
 
-        assert (reader.readRaw(buffer, 1) == value);
-        assert (reader.readDelta(buffer, 33) == value + delta);
+        assertEquals(reader.readRaw(buffer, 1).longValue(), value);
+        assertEquals(reader.readDelta(buffer, 33).longValue(), value + delta);
     }
 }

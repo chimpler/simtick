@@ -11,7 +11,7 @@ import com.chimpler.simtick.writers.Writer;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertArrayEquals;
 
 public class SimTickReaderWriterTest {
     @Test
@@ -65,8 +65,8 @@ public class SimTickReaderWriterTest {
         offset += reader.read(buffer, offset, resultRow2);
         reader.read(buffer, offset, resultRow3);
 
-        assert (Arrays.equals(row1, resultRow1));
-        assert (Arrays.equals(row2, resultRow2));
-        assert (Arrays.equals(row3, resultRow3));
+        assertArrayEquals(row1, resultRow1);
+        assertArrayEquals(row2, resultRow2);
+        assertArrayEquals(row3, resultRow3);
     }
 }
