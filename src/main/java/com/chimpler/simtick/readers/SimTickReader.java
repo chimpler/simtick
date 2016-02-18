@@ -1,4 +1,4 @@
-package com.chimpler.simtick;
+package com.chimpler.simtick.readers;
 
 import com.chimpler.simtick.codec.BitCodec;
 import com.chimpler.simtick.readers.Reader;
@@ -21,16 +21,16 @@ public class SimTickReader {
             Reader reader = readers[i];
             Object value = isDelta ? reader.readDelta(buffer, offset) : reader.readRaw(buffer, offset);
             result[i] = value;
-            offset += reader.rawBits;
-            rowLen += reader.rawBits;
+            int len = isDelta ? reader.deltaBits : reader.rawBits;
+            offset += len;
+            rowLen += len;
         }
         return rowLen;
     }
 
-    public int read(byte[] buffer, int srcOffset, Object[] result) {
+    public int read(byte[] buffer, int offset, Object[] result) {
         // check if all values can be delta-ed or not
-        int offset = srcOffset;
-        boolean isDelta = bitCodec.read(buffer, offset++, 1) == 1;
-        return 1 + readValues(buffer, offset, isDelta, result);
+        boolean isDelta = bitCodec.read(buffer, offset, 1) == 1;
+        return readValues(buffer, offset + 1, isDelta, result) + 1;
     }
 }

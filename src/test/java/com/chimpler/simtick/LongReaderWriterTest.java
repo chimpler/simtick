@@ -13,8 +13,9 @@ public class LongReaderWriterTest {
         LongReader reader = new LongReader(32, 2, true, true);
         LongWriter writer = new LongWriter(32, 2, true, true);
         writer.writeRaw(buffer, value, 1);
-        writer.writeDelta(buffer, value + delta, 50);
+        writer.writeDelta(buffer, value + delta, 33);
+
         assert reader.readRaw(buffer, 1) == value;
-        assert reader.readDelta(buffer, 50) == value + delta;
+        assert reader.readDelta(buffer, 33) == value + delta;
     }
 }

@@ -5,18 +5,18 @@ public class BitCodec {
 
     public long read(byte[] array, int pos, int len) {
         long value = 0;
-        int offset = pos % 8;
         for (int i = 0; i < len; i++) {
-            value = (value << 1) | ((array[(i + pos) / 8] >> (len + (8 - offset) - i - 1) % 8) & 0x01);
+            // 32 max length + 7 so it doesn't become negative
+            value = (value << 1) | ((array[(i + pos) / 8] >> ((39 - pos % 8 - i) % 8)) & 0x01);
         }
         return value;
     }
 
     public void write(byte[] array, long value, int pos, int len) {
-        int offset = pos % 8;
         java.util.Arrays.fill(buffer, (byte)0);
         for (int i = 0; i < len; i++) {
-            buffer[(i + offset) / 8] |= (byte)((value >> ((len - i - 1))) & 0x1) << ((len + (8 - offset) - i - 1) % 8);
+            // 32 max length + 7 so it doesn't become negative
+            array[(i + pos) / 8] |= (byte)((value >> (len - i - 1)) & 0x1) << (((39 - pos % 8 - i)) % 8);
         }
 
         for (int i = 0; i < 9; i++) {

@@ -20,7 +20,7 @@ public class LongReader extends Reader<Long> {
 
     @Override
     public Long readDelta(byte[] buffer, int offset) {
-        Long delta = codec.readDeltaValue(buffer, offset) ;
+        Long delta = codec.readDeltaValue(buffer, offset);
         this.oldValue += delta;
         return this.oldValue;
     }

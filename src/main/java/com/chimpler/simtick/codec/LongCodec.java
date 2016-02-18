@@ -32,7 +32,7 @@ public class LongCodec {
             this.minDelta = 0;
         } else {
             this.maxDelta = unsignedMaxDelta >> 1;
-            this.minDelta = -unsignedMaxDelta >> 1;
+            this.minDelta = -(unsignedMaxDelta >> 1) - 1;
             this.halfMaxDelta = unsignedMaxDelta / 2;
         }
     }
