@@ -25,7 +25,6 @@ test {
 
 findbugs {
   ignoreFailures = true
-  toolVersion = "3.0.1"
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/findbugs")
   effort = "max"
@@ -33,7 +32,6 @@ findbugs {
 
 pmd {
   ignoreFailures = true
-  toolVersion = "5.4.1"
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
 }
