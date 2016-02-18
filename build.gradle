@@ -19,7 +19,7 @@ dependencies {
 test {
     testLogging {
         // Show that tests are run in the command-line output
-        events 'started', 'passed'
+        events 'passed'
     }
 }
 
@@ -32,7 +32,8 @@ findbugs {
 }
 
 pmd {
-  ignoreFailures = false
+  ignoreFailures = true
+  toolVersion = "5.4.1"
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
 }
