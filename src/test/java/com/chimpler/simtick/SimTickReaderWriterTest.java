@@ -65,8 +65,8 @@ public class SimTickReaderWriterTest {
         offset += reader.read(buffer, offset, resultRow2);
         reader.read(buffer, offset, resultRow3);
 
-        assert(Arrays.equals(row1, resultRow1));
-        assert(Arrays.equals(row2, resultRow2));
-        assert(Arrays.equals(row3, resultRow3));
+        assert (Arrays.equals(row1, resultRow1));
+        assert (Arrays.equals(row2, resultRow2));
+        assert (Arrays.equals(row3, resultRow3));
     }
 }
