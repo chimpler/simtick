@@ -27,6 +27,6 @@ Fixed decimal point (delta)    | :white_check_mark:
 Fixed decimal point (fixed)    | :x:
 Joda DateTime (delta)          | :white_check_mark:
 Joda DateTime (fixed)          | :x:
-Fixed length string (fixed)    | :x:
+Fixed length string (fixed)    | :white_check_mark:
 Variable length string (fixed) | :x:
 Enum (fixed)                   | :x:
