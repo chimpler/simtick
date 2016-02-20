@@ -10,9 +10,8 @@ public class DateTimeWriter extends Writer<DateTime> {
     private int divFactor;
 
     public DateTimeWriter(int maxDeltaValues, boolean isMillis) {
+        super(32, (int) Math.ceil(Math.log(maxDeltaValues) / Math.log(2)));
         this.divFactor = isMillis ? 1 : 1000;
-        int deltaBits = (int) Math.ceil(Math.log(maxDeltaValues) / Math.log(2));
-        int rawBits = 32;
         this.longCodec = new LongCodec(rawBits, deltaBits, true, true);
     }
 

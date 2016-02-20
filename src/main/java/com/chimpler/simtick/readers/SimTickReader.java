@@ -15,11 +15,10 @@ public class SimTickReader {
         int offset = srcOffset;
         for (int i = 0; i < readers.length; i++) {
             Reader reader = readers[i];
-            Object value = isDelta ? reader.readDelta(buffer, offset) : reader.readRaw(buffer, offset);
-            result[i] = value;
-            int len = isDelta ? reader.deltaBits : reader.rawBits;
-            offset += len;
-            rowLen += len;
+            ValueAndLength valueAndLength = isDelta ? reader.readDelta(buffer, offset) : reader.readRaw(buffer, offset);
+            result[i] = valueAndLength.value;
+            offset += valueAndLength.length;
+            rowLen += valueAndLength.length;
         }
         return rowLen;
     }

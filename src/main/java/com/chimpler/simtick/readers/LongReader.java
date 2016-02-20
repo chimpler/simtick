@@ -4,24 +4,26 @@ import com.chimpler.simtick.codec.LongCodec;
 
 public class LongReader extends Reader<Long> {
     private LongCodec codec;
-    private Long oldValue;
 
     public LongReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta) {
-        this.rawBits = rawBits;
-        this.deltaBits = deltaBits;
+        super(rawBits, deltaBits);
         this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
     }
 
     @Override
-    public Long readRaw(byte[] buffer, int offset) {
-        this.oldValue = codec.readRawValue(buffer, offset);
-        return oldValue;
+    public ValueAndLength<Long> readRaw(byte[] buffer, int offset) {
+        return this.valueAndLength.withValueAndLength(
+                codec.readRawValue(buffer, offset),
+                rawBits
+        );
     }
 
     @Override
-    public Long readDelta(byte[] buffer, int offset) {
+    public ValueAndLength<Long> readDelta(byte[] buffer, int offset) {
         Long delta = codec.readDeltaValue(buffer, offset);
-        this.oldValue += delta;
-        return this.oldValue;
+        return this.valueAndLength.withValueAndLength(
+                this.valueAndLength.value + delta,
+                deltaBits
+        );
     }
 }

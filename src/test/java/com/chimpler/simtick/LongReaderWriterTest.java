@@ -1,6 +1,7 @@
 package com.chimpler.simtick;
 
 import com.chimpler.simtick.readers.LongReader;
+import com.chimpler.simtick.readers.ValueAndLength;
 import com.chimpler.simtick.writers.LongWriter;
 import org.junit.Test;
 
@@ -11,13 +12,16 @@ public class LongReaderWriterTest {
     public void testLongReaderWriter() {
         long value = 1455595658L;
         long delta = 2;
-        byte[] buffer = new byte[100];
-        LongReader reader = new LongReader(32, 2, true, true);
-        LongWriter writer = new LongWriter(32, 2, true, true);
-        writer.writeRaw(buffer, value, 1);
-        writer.writeDelta(buffer, value + delta, 33);
+        int rawBits = 32;
+        int deltaBits = 2;
 
-        assertEquals(reader.readRaw(buffer, 1).longValue(), value);
-        assertEquals(reader.readDelta(buffer, 33).longValue(), value + delta);
+        byte[] buffer = new byte[100];
+        LongReader reader = new LongReader(rawBits, deltaBits, true, true);
+        LongWriter writer = new LongWriter(rawBits, deltaBits, true, true);
+        writer.writeRaw(buffer, value, 1);
+        writer.writeDelta(buffer, value + delta, 1 + rawBits);
+
+        assertEquals(new ValueAndLength<Long>(value, rawBits), reader.readRaw(buffer, 1));
+        assertEquals(new ValueAndLength<Long>(value + delta, deltaBits), reader.readDelta(buffer, 1 + rawBits));
     }
 }

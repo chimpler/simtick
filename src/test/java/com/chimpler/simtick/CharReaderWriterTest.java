@@ -1,9 +1,8 @@
 package com.chimpler.simtick;
 
 import com.chimpler.simtick.readers.CharReader;
-import com.chimpler.simtick.readers.LongReader;
+import com.chimpler.simtick.readers.ValueAndLength;
 import com.chimpler.simtick.writers.CharWriter;
-import com.chimpler.simtick.writers.LongWriter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +18,7 @@ public class CharReaderWriterTest {
         writer.writeRaw(buffer, value1, 2);
         writer.writeDelta(buffer, value2, 18);
 
-        assertEquals(value1, reader.readRaw(buffer, 2));
-        assertEquals(value2, reader.readDelta(buffer, 18));
+        assertEquals(new ValueAndLength<String>(value1, 16), reader.readRaw(buffer, 2));
+        assertEquals(new ValueAndLength<String>(value2, 16), reader.readDelta(buffer, 18));
     }
 }

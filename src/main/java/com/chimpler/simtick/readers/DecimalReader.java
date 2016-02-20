@@ -8,22 +8,27 @@ public class DecimalReader extends Reader<Double> {
     private double divFactor;
 
     public DecimalReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta, int decimalMark) {
-        this.rawBits = rawBits;
-        this.deltaBits = deltaBits;
+        super(rawBits, deltaBits);
         this.divFactor = (int)Math.pow(10, decimalMark);
         this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
     }
 
     @Override
-    public Double readRaw(byte[] buffer, int offset) {
+    public ValueAndLength<Double> readRaw(byte[] buffer, int offset) {
         this.oldValue = codec.readRawValue(buffer, offset);
-        return oldValue / divFactor;
+        return this.valueAndLength.withValueAndLength(
+                oldValue / divFactor,
+                rawBits
+        );
     }
 
     @Override
-    public Double readDelta(byte[] buffer, int offset) {
+    public ValueAndLength<Double> readDelta(byte[] buffer, int offset) {
         Long delta = codec.readDeltaValue(buffer, offset);
         this.oldValue += delta;
-        return this.oldValue / divFactor;
+        return this.valueAndLength.withValueAndLength(
+                oldValue / divFactor,
+                deltaBits
+        );
     }
 }

@@ -30,3 +30,8 @@ Joda DateTime (fixed)          | :x:
 Fixed length string (fixed)    | :white_check_mark:
 Variable length string (fixed) | :x:
 Enum (fixed)                   | :x:
+
+### TODO
+
+- implement input and output stream
+- change signature of constructors to have (minValue, maxValue, minDelta, maxDelta)

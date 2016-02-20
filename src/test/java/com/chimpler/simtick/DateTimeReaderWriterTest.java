@@ -1,6 +1,7 @@
 package com.chimpler.simtick;
 
 import com.chimpler.simtick.readers.DateTimeReader;
+import com.chimpler.simtick.readers.ValueAndLength;
 import com.chimpler.simtick.writers.DateTimeWriter;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class DateTimeReaderWriterTest {
         DateTime later = now.plusSeconds(2);
         writer.writeRaw(buffer, now, 1);
         writer.writeDelta(buffer, later, 33);
-        assertEquals(now, reader.readRaw(buffer, 1));
-        assertEquals(later, reader.readDelta(buffer, 33));
+        assertEquals(new ValueAndLength<DateTime>(now, 32), reader.readRaw(buffer, 1));
+        assertEquals(new ValueAndLength<DateTime>(later, 4), reader.readDelta(buffer, 33));
     }
 }

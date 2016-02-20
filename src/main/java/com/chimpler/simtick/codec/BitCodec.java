@@ -23,7 +23,6 @@ public class BitCodec {
             buffer[pos / 8 + i] |= value[i] >> offset;
             buffer[pos / 8 + i + 1] |= value[i] << (8 - offset);
         }
-        print(buffer);
     }
 
     public byte[] readBytes(byte[] buffer, int pos, byte[] output, int numBytes) {

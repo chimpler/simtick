@@ -1,6 +1,7 @@
 package com.chimpler.simtick;
 
 import com.chimpler.simtick.readers.DecimalReader;
+import com.chimpler.simtick.readers.ValueAndLength;
 import com.chimpler.simtick.writers.DecimalWriter;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class DecimalReaderWriterTest {
         DecimalWriter writer = new DecimalWriter(32, 8, true, true, 3);
         writer.writeRaw(buffer, value, 1);
         writer.writeDelta(buffer, value + delta, 50);
-        assertEquals(reader.readRaw(buffer, 1).doubleValue(), value, 0);
-        assertEquals(reader.readDelta(buffer, 50).doubleValue(), value + delta, 0);
+        assertEquals(new ValueAndLength<Double>(value, 32), reader.readRaw(buffer, 1));
+        assertEquals(new ValueAndLength<Double>(value + delta, 8), reader.readDelta(buffer, 50));
     }
 }

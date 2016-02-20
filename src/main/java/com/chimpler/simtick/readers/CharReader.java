@@ -1,33 +1,34 @@
 package com.chimpler.simtick.readers;
 
 import com.chimpler.simtick.codec.BitCodec;
+import org.joda.time.DateTime;
 
 public class CharReader extends Reader<String> {
     private final BitCodec codec;
     private final int numChars;
-    private ThreadLocal<byte[]> tmpBuffer = new ThreadLocal<byte[]>() {
-        @Override
-        protected byte[] initialValue() {
-            return new byte[numChars];
-        }
-    };
+    private final byte[] tmpBuffer;
 
     public CharReader(int numChars) {
+        super(numChars * 8, numChars * 8);
         this.codec = new BitCodec();
         this.numChars = numChars;
+        this.tmpBuffer = new byte[numChars];
     }
 
-    private String readValue(byte[] buffer, int offset) {
-        return new String(codec.readBytes(buffer, offset, tmpBuffer.get(), numChars), 0, numChars);
+    private ValueAndLength<String> readValue(byte[] buffer, int offset) {
+        return this.valueAndLength.withValueAndLength(
+                new String(codec.readBytes(buffer, offset, tmpBuffer, numChars), 0, numChars),
+                numChars * 8
+        );
     }
 
     @Override
-    public String readRaw(byte[] buffer, int offset) {
+    public ValueAndLength<String> readRaw(byte[] buffer, int offset) {
         return readValue(buffer, offset);
     }
 
     @Override
-    public String readDelta(byte[] buffer, int offset) {
+    public ValueAndLength<String> readDelta(byte[] buffer, int offset) {
         return readValue(buffer, offset);
     }
 }

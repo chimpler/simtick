@@ -5,15 +5,12 @@ import com.chimpler.simtick.codec.LongCodec;
 public class DecimalWriter extends Writer<Double> {
     private LongCodec codec;
     private Long oldValue = Long.MAX_VALUE;
-    private int rawBits;
-    private int deltaBits;
     private double divFactor;
 
     public DecimalWriter(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta, int decimalMark) {
+        super(rawBits, deltaBits);
         this.divFactor = (int)Math.pow(10, decimalMark);
         this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
-        this.rawBits = rawBits;
-        this.deltaBits = deltaBits;
     }
 
     @Override
