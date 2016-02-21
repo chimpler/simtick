@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/chimpler/simtick.svg?branch=master)](https://travis-ci.org/chimpler/simtick)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/a3d06125f57243be8b9d399c607f575b)](https://www.codacy.com/app/francois-dangngoc/simtick)
+[![Codacy Badge](https://api.codacy.com/project/badge/coverage/a3d06125f57243be8b9d399c607f575b)](https://www.codacy.com/app/francois-dangngoc/simtick)
 
 simtick
 =======
