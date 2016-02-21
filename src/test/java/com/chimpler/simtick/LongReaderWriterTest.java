@@ -12,12 +12,12 @@ public class LongReaderWriterTest {
     public void testLongReaderWriter() {
         long value = 1455595658L;
         long delta = 2;
-        int rawBits = 32;
-        int deltaBits = 2;
+        int rawBits = 31;
+        int deltaBits = 6;
 
         byte[] buffer = new byte[100];
-        LongReader reader = new LongReader(rawBits, deltaBits, true, true);
-        LongWriter writer = new LongWriter(rawBits, deltaBits, true, true);
+        LongReader reader = new LongReader(1000, 2000000000L, -20, 20);
+        LongWriter writer = new LongWriter(1000, 2000000000L, -20, 20);
         writer.writeRaw(buffer, value, 1);
         writer.writeDelta(buffer, value + delta, 1 + rawBits);
 

@@ -1,5 +1,6 @@
 package com.chimpler.simtick.writers;
 
+import com.chimpler.simtick.codec.CodecFactory;
 import com.chimpler.simtick.codec.LongCodec;
 
 public class DecimalWriter extends Writer<Double> {
@@ -7,10 +8,14 @@ public class DecimalWriter extends Writer<Double> {
     private Long oldValue = Long.MAX_VALUE;
     private double divFactor;
 
-    public DecimalWriter(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta, int decimalMark) {
-        super(rawBits, deltaBits);
-        this.divFactor = (int)Math.pow(10, decimalMark);
-        this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
+    public DecimalWriter(double minRaw, double maxRaw, double minDelta, double maxDelta, int decimalMark) {
+        this.divFactor = (int) Math.pow(10, decimalMark);
+        this.codec = new CodecFactory().buildLongCodec(
+                (long) (minRaw * divFactor),
+                (long) (maxRaw * divFactor),
+                (long) (minDelta * divFactor),
+                (long) (maxDelta * divFactor)
+        );
     }
 
     @Override
@@ -23,7 +28,7 @@ public class DecimalWriter extends Writer<Double> {
     public int writeRaw(byte[] buffer, Double value, int offset) {
         this.oldValue = (long)(value * divFactor);
         codec.writeRawValue(buffer, oldValue, offset);
-        return rawBits;
+        return codec.rawBits;
     }
 
     @Override
@@ -32,6 +37,6 @@ public class DecimalWriter extends Writer<Double> {
         long delta = longValue - oldValue;
         this.oldValue = longValue;
         codec.writeDeltaValue(buffer, delta, offset);
-        return deltaBits;
+        return codec.deltaBits;
     }
 }

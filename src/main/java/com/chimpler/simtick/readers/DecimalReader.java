@@ -1,5 +1,6 @@
 package com.chimpler.simtick.readers;
 
+import com.chimpler.simtick.codec.CodecFactory;
 import com.chimpler.simtick.codec.LongCodec;
 
 public class DecimalReader extends Reader<Double> {
@@ -7,10 +8,14 @@ public class DecimalReader extends Reader<Double> {
     private Long oldValue;
     private double divFactor;
 
-    public DecimalReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta, int decimalMark) {
-        super(rawBits, deltaBits);
-        this.divFactor = (int)Math.pow(10, decimalMark);
-        this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
+    public DecimalReader(double minRaw, double maxRaw, double minDelta, double maxDelta, int decimalMark) {
+        this.divFactor = (int) Math.pow(10, decimalMark);
+        this.codec = new CodecFactory().buildLongCodec(
+                (long) (minRaw * divFactor),
+                (long) (maxRaw * divFactor),
+                (long) (minDelta * divFactor),
+                (long) (maxDelta * divFactor)
+        );
     }
 
     @Override
@@ -18,7 +23,7 @@ public class DecimalReader extends Reader<Double> {
         this.oldValue = codec.readRawValue(buffer, offset);
         return this.valueAndLength.withValueAndLength(
                 oldValue / divFactor,
-                rawBits
+                codec.rawBits
         );
     }
 
@@ -28,7 +33,7 @@ public class DecimalReader extends Reader<Double> {
         this.oldValue += delta;
         return this.valueAndLength.withValueAndLength(
                 oldValue / divFactor,
-                deltaBits
+                codec.deltaBits
         );
     }
 }

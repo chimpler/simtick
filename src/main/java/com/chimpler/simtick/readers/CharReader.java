@@ -1,7 +1,6 @@
 package com.chimpler.simtick.readers;
 
 import com.chimpler.simtick.codec.BitCodec;
-import org.joda.time.DateTime;
 
 public class CharReader extends Reader<String> {
     private final BitCodec codec;
@@ -9,7 +8,6 @@ public class CharReader extends Reader<String> {
     private final byte[] tmpBuffer;
 
     public CharReader(int numChars) {
-        super(numChars * 8, numChars * 8);
         this.codec = new BitCodec();
         this.numChars = numChars;
         this.tmpBuffer = new byte[numChars];

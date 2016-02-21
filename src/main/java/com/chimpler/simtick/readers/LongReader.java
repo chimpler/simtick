@@ -1,20 +1,20 @@
 package com.chimpler.simtick.readers;
 
+import com.chimpler.simtick.codec.CodecFactory;
 import com.chimpler.simtick.codec.LongCodec;
 
 public class LongReader extends Reader<Long> {
     private LongCodec codec;
 
-    public LongReader(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta) {
-        super(rawBits, deltaBits);
-        this.codec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
+    public LongReader(long minRaw, long maxRaw, long minDelta, long maxDelta) {
+        codec = new CodecFactory().buildLongCodec(minRaw, maxRaw, minDelta, maxDelta);
     }
 
     @Override
     public ValueAndLength<Long> readRaw(byte[] buffer, int offset) {
         return this.valueAndLength.withValueAndLength(
                 codec.readRawValue(buffer, offset),
-                rawBits
+                codec.rawBits
         );
     }
 
@@ -23,7 +23,7 @@ public class LongReader extends Reader<Long> {
         Long delta = codec.readDeltaValue(buffer, offset);
         return this.valueAndLength.withValueAndLength(
                 this.valueAndLength.value + delta,
-                deltaBits
+                codec.deltaBits
         );
     }
 }

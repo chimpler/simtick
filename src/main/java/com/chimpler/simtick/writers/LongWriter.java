@@ -1,32 +1,32 @@
 package com.chimpler.simtick.writers;
 
+import com.chimpler.simtick.codec.CodecFactory;
 import com.chimpler.simtick.codec.LongCodec;
 
 public class LongWriter extends Writer<Long> {
-    private LongCodec longCodec;
+    private LongCodec codec;
     private Long oldValue = Long.MAX_VALUE;
 
-    public LongWriter(int rawBits, int deltaBits, boolean unsignedRaw, boolean unsignedDelta) {
-        super(rawBits, deltaBits);
-        this.longCodec = new LongCodec(rawBits, deltaBits, unsignedRaw, unsignedDelta);
+    public LongWriter(long minRaw, long maxRaw, long minDelta, long maxDelta) {
+        codec = new CodecFactory().buildLongCodec(minRaw, maxRaw, minDelta, maxDelta);
     }
 
     @Override
     public boolean isDelta(Long value) {
-        return this.longCodec.isInDeltaRange(oldValue, value);
+        return this.codec.isInDeltaRange(oldValue, value);
     }
 
     @Override
     public int writeRaw(byte[] buffer, Long value, int offset) {
-        longCodec.writeRawValue(buffer, value, offset);
+        codec.writeRawValue(buffer, value, offset);
         oldValue = value;
-        return rawBits;
+        return codec.rawBits;
     }
 
     @Override
     public int writeDelta(byte[] buffer, Long value, int offset) {
-        longCodec.writeDeltaValue(buffer, value - oldValue, offset);
+        codec.writeDeltaValue(buffer, value - oldValue, offset);
         oldValue = value;
-        return deltaBits;
+        return codec.deltaBits;
     }
 }

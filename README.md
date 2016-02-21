@@ -34,4 +34,3 @@ Enum (fixed)                   | :x:
 ### TODO
 
 - implement input and output stream
-- change signature of constructors to have (minValue, maxValue, minDelta, maxDelta)

@@ -16,21 +16,24 @@ import static org.junit.Assert.assertArrayEquals;
 public class SimTickReaderWriterTest {
     @Test
     public void testSimTickReaderWriter() {
-        SimTickWriter writer = new SimTickWriter(new Writer[]{
-                new LongWriter(16, 3, true, true),
-                new LongWriter(12, 3, true, true),
-                new DateTimeWriter(10, false)
-        });
-
-        SimTickReader reader = new SimTickReader(new Reader[]{
-                new LongReader(16, 3, true, true),
-                new LongReader(12, 3, true, true),
-                new DateTimeReader(10, false)
-        });
-
         DateTime now = new DateTime().withMillisOfSecond(0);
         DateTime later1 = now.plusSeconds(2);
         DateTime later2 = now.plusSeconds(3);
+        DateTime minDate = new DateTime(2000, 1, 1, 0, 0);
+        DateTime maxDate = new DateTime(2020, 1, 1, 0, 0);
+
+        SimTickWriter writer = new SimTickWriter(new Writer[]{
+                new LongWriter(0, 1000000, 0, 100),
+                new LongWriter(0, 1000000, 0, 100),
+                new DateTimeWriter(minDate, maxDate, -20, 20, false)
+        });
+
+        SimTickReader reader = new SimTickReader(new Reader[]{
+                new LongReader(0, 1000000, 0, 100),
+                new LongReader(0, 1000000, 0, 100),
+                new DateTimeReader(minDate, maxDate, -20, 20, false)
+        });
+
 
         Object[] row1 = new Object[]{
                 15321L,

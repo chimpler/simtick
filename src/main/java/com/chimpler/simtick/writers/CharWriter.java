@@ -7,7 +7,6 @@ public class CharWriter extends Writer<String> {
     private final int numChars;
 
     public CharWriter(int numChars) {
-        super(numChars * 8, numChars * 8);
         this.bitCodec = new BitCodec();
         this.numChars = numChars;
     }
