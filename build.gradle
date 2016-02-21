@@ -4,9 +4,21 @@ version '1.0-SNAPSHOT'
 apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
+apply plugin: 'cobertura'
+
 
 sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.4'
+    }
+}
 repositories {
     mavenCentral()
 }
@@ -35,3 +47,12 @@ pmd {
     ignoreFailures = true
     reportsDir = file("$project.buildDir/reports/pmd")
 }
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreTrivial = true
+    coverageIgnores = ['org.slf4j.Logger.*']
+    coverageReportDir = new File("$buildDir/reports/cobertura")
+}
+
+test.finalizedBy(project.tasks.cobertura)
