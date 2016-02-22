@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LongReaderWriterTest {
     @Test
-    public void testLongReaderWriter() {
+    public void testDeltaLongReaderWriter() {
         long value = 1455595658L;
         long delta = 2;
         int rawBits = 31;

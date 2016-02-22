@@ -1,7 +1,6 @@
 package com.chimpler.simtick.writers;
 
 import com.chimpler.simtick.codec.BitCodec;
-import com.chimpler.simtick.writers.Writer;
 
 public class SimTickWriter {
     private Writer[] writers;
@@ -29,7 +28,7 @@ public class SimTickWriter {
         for (int i = 0; i < writers.length; i++) {
             Writer writer = writers[i];
             Object value = values[i];
-            if (!writer.isDelta(value)) {
+            if (!writer.fixed && !writer.isDelta(value)) {
                 return false;
             }
         }
@@ -40,7 +39,7 @@ public class SimTickWriter {
         // check if all values can be delta-ed or not
         boolean isDelta = isDelta(values);
 
-        long deltaBit = isDelta ? 1:0;
+        long deltaBit = isDelta ? 1 : 0;
         bitCodec.write(buffer, deltaBit, offset, 1);
         return writeValues(buffer, values, offset + 1, isDelta) + 1;
     }

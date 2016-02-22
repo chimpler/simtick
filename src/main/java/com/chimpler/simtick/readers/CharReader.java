@@ -8,6 +8,7 @@ public class CharReader extends Reader<String> {
     private final byte[] tmpBuffer;
 
     public CharReader(int numChars) {
+        super(true);
         this.codec = new BitCodec();
         this.numChars = numChars;
         this.tmpBuffer = new byte[numChars];

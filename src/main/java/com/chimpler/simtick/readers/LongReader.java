@@ -6,8 +6,17 @@ import com.chimpler.simtick.codec.LongCodec;
 public class LongReader extends Reader<Long> {
     private LongCodec codec;
 
+    public LongReader(long minRaw, long maxRaw) {
+        this(minRaw, maxRaw, true, 0, 0);
+    }
+
     public LongReader(long minRaw, long maxRaw, long minDelta, long maxDelta) {
-        codec = new CodecFactory().buildLongCodec(minRaw, maxRaw, minDelta, maxDelta);
+        this(minRaw, maxRaw, false, minDelta, maxDelta);
+    }
+
+    private LongReader(long minRaw, long maxRaw, boolean fixed, long minDelta, long maxDelta) {
+        super(fixed);
+        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta);
     }
 
     @Override

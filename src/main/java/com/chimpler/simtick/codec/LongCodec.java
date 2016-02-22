@@ -19,6 +19,10 @@ public class LongCodec {
         this.maxDelta = minDelta + 1 << rawBits;
     }
 
+    public LongCodec(int rawBits, long minRaw) {
+        this(rawBits, 0, minRaw, 0L);
+    }
+
     public boolean isInDeltaRange(long oldValue, long newValue) {
         long diff = newValue - oldValue;
         return minDelta <= diff && diff <= maxDelta;

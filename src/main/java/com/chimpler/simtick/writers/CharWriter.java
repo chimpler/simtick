@@ -7,6 +7,7 @@ public class CharWriter extends Writer<String> {
     private final int numChars;
 
     public CharWriter(int numChars) {
+        super(true);
         this.bitCodec = new BitCodec();
         this.numChars = numChars;
     }

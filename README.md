@@ -22,14 +22,14 @@ Codec command line tool                 | :x:
 
 Type                           | Status
 -------------------------------| :----:
-Long (fixed)                   | :x:
+Long (fixed)                   | :white_check_mark:
 Long (delta)                   | :white_check_mark:
 Fixed decimal point (delta)    | :white_check_mark:
-Fixed decimal point (fixed)    | :x:
+Fixed decimal point (fixed)    | :white_check_mark:
 Joda DateTime (delta)          | :white_check_mark:
-Joda DateTime (fixed)          | :x:
+Joda DateTime (fixed)          | :white_check_mark:
 Fixed length string (fixed)    | :white_check_mark:
-Variable length string (fixed) | :x:
+Variable length string (fixed) | :white_check_mark:
 Enum (fixed)                   | :x:
 
 ### TODO

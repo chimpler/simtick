@@ -7,8 +7,17 @@ public class LongWriter extends Writer<Long> {
     private LongCodec codec;
     private Long oldValue = Long.MAX_VALUE;
 
+    public LongWriter(long minRaw, long maxRaw) {
+        this(minRaw, maxRaw, true, 0, 0);
+    }
+
     public LongWriter(long minRaw, long maxRaw, long minDelta, long maxDelta) {
-        codec = new CodecFactory().buildLongCodec(minRaw, maxRaw, minDelta, maxDelta);
+        this(minRaw, maxRaw, false, minDelta, maxDelta);
+    }
+
+    private LongWriter(long minRaw, long maxRaw, boolean fixed, long minDelta, long maxDelta) {
+        super(fixed);
+        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta);
     }
 
     @Override
