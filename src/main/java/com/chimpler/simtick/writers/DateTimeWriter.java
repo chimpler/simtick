@@ -25,7 +25,8 @@ public class DateTimeWriter extends Writer<DateTime> {
                 minDate.getMillis() / divFactor,
                 maxDate.getMillis() / divFactor,
                 minDeltaValues,
-                maxDeltaValues
+                maxDeltaValues,
+                true
         );
     }
 

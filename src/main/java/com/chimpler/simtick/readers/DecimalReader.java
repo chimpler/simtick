@@ -23,7 +23,8 @@ public class DecimalReader extends Reader<Double> {
                 (long) (minRaw * divFactor),
                 (long) (maxRaw * divFactor),
                 (long) (minDelta * divFactor),
-                (long) (maxDelta * divFactor)
+                (long) (maxDelta * divFactor),
+                false
         );
     }
 

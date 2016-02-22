@@ -17,7 +17,7 @@ public class LongWriter extends Writer<Long> {
 
     private LongWriter(long minRaw, long maxRaw, boolean fixed, long minDelta, long maxDelta) {
         super(fixed);
-        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta);
+        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta, false);
     }
 
     @Override

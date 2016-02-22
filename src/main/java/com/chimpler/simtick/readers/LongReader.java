@@ -16,7 +16,7 @@ public class LongReader extends Reader<Long> {
 
     private LongReader(long minRaw, long maxRaw, boolean fixed, long minDelta, long maxDelta) {
         super(fixed);
-        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta);
+        codec = new CodecFactory().buildDeltaLongCodec(minRaw, maxRaw, minDelta, maxDelta, false);
     }
 
     @Override

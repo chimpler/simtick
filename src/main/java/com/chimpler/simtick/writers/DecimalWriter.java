@@ -24,7 +24,8 @@ public class DecimalWriter extends Writer<Double> {
                 (long) (minRaw * divFactor),
                 (long) (maxRaw * divFactor),
                 (long) (minDelta * divFactor),
-                (long) (maxDelta * divFactor)
+                (long) (maxDelta * divFactor),
+                false
         );
     }
 

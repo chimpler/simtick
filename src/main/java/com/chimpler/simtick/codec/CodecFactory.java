@@ -12,7 +12,15 @@ public class CodecFactory {
         return new LongCodec(rawBits, actualMinRaw);
     }
 
-    public LongCodec buildDeltaLongCodec(long minRaw, long maxRaw, long minDelta, long maxDelta) {
+    /**
+     * @param minRaw
+     * @param maxRaw
+     * @param minDelta
+     * @param maxDelta
+     * @param keepMin  recompute min based on additional range provided by bits
+     * @return
+     */
+    public LongCodec buildDeltaLongCodec(long minRaw, long maxRaw, long minDelta, long maxDelta, boolean keepMin) {
         // determine number of bit to encode raw and deltq
         long rawRange = maxRaw - minRaw;
         long deltaRange = maxDelta - minDelta;
@@ -23,11 +31,16 @@ public class CodecFactory {
         long middleRawOffset = minRaw + rawRange / 2;
         long middleDeltaOffset = minDelta + deltaRange / 2;
 
-        long actualRawRange = (long) Math.pow(2, rawBits);
-        long actualDeltaRange = (long) Math.pow(2, deltaBits);
+        long actualMinRaw = minRaw;
+        long actualMinDelta = minDelta;
+        if (!keepMin) {
+            long actualRawRange = (long) Math.pow(2, rawBits);
+            long actualDeltaRange = (long) Math.pow(2, deltaBits);
 
-        long actualMinRaw = middleRawOffset - actualRawRange / 2;
-        long actualMinDelta = middleDeltaOffset - actualDeltaRange / 2;
+            actualMinRaw = middleRawOffset - actualRawRange / 2;
+            actualMinDelta = middleDeltaOffset - actualDeltaRange / 2;
+        }
+
         return new LongCodec(rawBits, deltaBits, actualMinRaw, actualMinDelta);
     }
 }

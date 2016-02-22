@@ -24,7 +24,8 @@ public class DateTimeReader extends Reader<DateTime> {
                 minDate.getMillis() / divFactor,
                 maxDate.getMillis() / divFactor,
                 minDeltaValues,
-                maxDeltaValues
+                maxDeltaValues,
+                true
         );
     }
 
