@@ -5,27 +5,31 @@ import com.chimpler.simtick.codec.BitCodec;
 public class SimTickReader {
     private Reader[] readers;
     private BitCodec bitCodec = new BitCodec();
+    private boolean deltaEnabled;
+    private boolean rowDelta;
 
-    public SimTickReader(Reader[] readers) {
+    public SimTickReader(Reader[] readers, boolean deltaEnabled, boolean rowDelta) {
         this.readers = readers;
+        this.deltaEnabled = deltaEnabled;
+        this.rowDelta = rowDelta;
     }
 
-    private int readValues(byte[] buffer, int srcOffset, boolean isDelta, Object[] result) {
-        int rowLen = 0;
+    public int read(byte[] buffer, int srcOffset, Object[] result) {
         int offset = srcOffset;
+        boolean isDelta = false;
+        if (deltaEnabled && rowDelta) {
+            isDelta = bitCodec.read(buffer, offset++, 1) == 1;
+        }
+
         for (int i = 0; i < readers.length; i++) {
             Reader reader = readers[i];
+            if (deltaEnabled && !rowDelta && !reader.fixed) {
+                isDelta = bitCodec.read(buffer, offset++, 1) == 1;
+            }
             ValueAndLength valueAndLength = isDelta ? reader.readDelta(buffer, offset) : reader.readRaw(buffer, offset);
             result[i] = valueAndLength.value;
             offset += valueAndLength.length;
-            rowLen += valueAndLength.length;
         }
-        return rowLen;
-    }
-
-    public int read(byte[] buffer, int offset, Object[] result) {
-        // check if all values can be delta-ed or not
-        boolean isDelta = bitCodec.read(buffer, offset, 1) == 1;
-        return readValues(buffer, offset + 1, isDelta, result) + 1;
+        return offset - srcOffset;
     }
 }

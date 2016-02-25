@@ -22,17 +22,23 @@ public class SimTickReaderWriterTest {
         DateTime minDate = new DateTime(2000, 1, 1, 0, 0);
         DateTime maxDate = new DateTime(2020, 1, 1, 0, 0);
 
-        SimTickWriter writer = new SimTickWriter(new Writer[]{
-                new LongWriter(0, 1000000, 0, 100),
-                new LongWriter(0, 1000000, 0, 100),
-                new DateTimeWriter(minDate, maxDate, -20, 20, false)
-        });
+        SimTickWriter writer = new SimTickWriter(
+                new Writer[]{
+                        new LongWriter(0, 1000000, 0, 100),
+                        new LongWriter(0, 1000000, 0, 100),
+                        new DateTimeWriter(minDate, maxDate, -20, 20, false)
+                },
+                true,
+                true);
 
-        SimTickReader reader = new SimTickReader(new Reader[]{
-                new LongReader(0, 1000000, 0, 100),
-                new LongReader(0, 1000000, 0, 100),
-                new DateTimeReader(minDate, maxDate, -20, 20, false)
-        });
+        SimTickReader reader = new SimTickReader(
+                new Reader[]{
+                        new LongReader(0, 1000000, 0, 100),
+                        new LongReader(0, 1000000, 0, 100),
+                        new DateTimeReader(minDate, maxDate, -20, 20, false)
+                },
+                true,
+                true);
 
 
         Object[] row1 = new Object[]{

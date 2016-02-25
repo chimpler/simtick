@@ -5,26 +5,17 @@ import com.chimpler.simtick.codec.BitCodec;
 public class SimTickWriter {
     private Writer[] writers;
     private BitCodec bitCodec;
+    private boolean deltaEnabled;
+    private boolean rowDelta;
 
-    public SimTickWriter(Writer[] writers) {
+    public SimTickWriter(Writer[] writers, boolean deltaEnabled, boolean rowDelta) {
         this.writers = writers;
         this.bitCodec = new BitCodec();
+        this.deltaEnabled = deltaEnabled;
+        this.rowDelta = rowDelta;
     }
 
-    private int writeValues(byte[] buffer, Object[] values, int srcOffset, boolean isDelta) {
-        int rowLen = 0;
-        int offset = srcOffset;
-        for (int i = 0; i < writers.length; i++) {
-            Writer writer = writers[i];
-            Object value = values[i];
-            int len = isDelta ? writer.writeDelta(buffer, value, offset) : writer.writeRaw(buffer, value, offset);
-            rowLen += len;
-            offset += len;
-        }
-        return rowLen;
-    }
-
-    private boolean isDelta(Object[] values) {
+    private boolean isRowDelta(Object[] values) {
         for (int i = 0; i < writers.length; i++) {
             Writer writer = writers[i];
             Object value = values[i];
@@ -35,12 +26,29 @@ public class SimTickWriter {
         return true;
     }
 
-    public int write(byte[] buffer, Object[] values, int offset) {
-        // check if all values can be delta-ed or not
-        boolean isDelta = isDelta(values);
+    public int write(byte[] buffer, Object[] values, int srcOffset) {
 
-        long deltaBit = isDelta ? 1 : 0;
-        bitCodec.write(buffer, deltaBit, offset, 1);
-        return writeValues(buffer, values, offset + 1, isDelta) + 1;
+        int offset = srcOffset;
+        // check if all values can be delta-ed or not
+        boolean isDelta;
+
+        if (deltaEnabled && rowDelta) {
+            isDelta = isRowDelta(values);
+            bitCodec.write(buffer, isDelta ? 1 : 0, offset++, 1);
+        }
+
+        for (int i = 0; i < writers.length; i++) {
+            Writer writer = writers[i];
+            Object value = values[i];
+            if (deltaEnabled && !rowDelta && !writer.fixed) {
+                isDelta = writer.isDelta(value);
+                bitCodec.write(buffer, isDelta ? 1 : 0, offset++, 1);
+            } else {
+                isDelta = false;
+            }
+
+            offset += isDelta ? writer.writeDelta(buffer, value, offset) : writer.writeRaw(buffer, value, offset);
+        }
+        return offset - srcOffset;
     }
 }

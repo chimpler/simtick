@@ -18,7 +18,7 @@ Partitioning                            | :x:
 Auto discovery of delta encoding params | :x:
 Codec command line tool                 | :x:
 Delta at row level                      | :white_check_mark:
-Delta at field level                    | :x:
+Delta at field level                    | :white_check_mark:
 
 ### Types supported
 
