@@ -13,8 +13,8 @@ public class DecimalReaderWriterTest {
         double value = 1455418.551;
         double delta = 0.2;
         byte[] buffer = new byte[100];
-        DecimalReader reader = new DecimalReader(100000, 2000000, 0, 1, 3);
-        DecimalWriter writer = new DecimalWriter(100000, 2000000, 0, 1, 3);
+        DecimalReader reader = new DecimalReader(100000, 2000000, 0, 1, (byte)3);
+        DecimalWriter writer = new DecimalWriter(100000, 2000000, 0, 1, (byte)3);
         writer.writeRaw(buffer, value, 1);
         writer.writeDelta(buffer, value + delta, 50);
         assertEquals(new ValueAndLength<Double>(value, 31), reader.readRaw(buffer, 1));

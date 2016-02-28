@@ -13,8 +13,8 @@ public class VarCharReaderWriterTest {
         String value1 = "ABCDEFGHI";
         String value2 = "JKL";
         byte[] buffer = new byte[1000];
-        VarCharReader reader = new VarCharReader(16);
-        VarCharWriter writer = new VarCharWriter(16);
+        VarCharReader reader = new VarCharReader((short)16);
+        VarCharWriter writer = new VarCharWriter((short)16);
         writer.writeRaw(buffer, value1, 2);
         writer.writeDelta(buffer, value2, 500);
 

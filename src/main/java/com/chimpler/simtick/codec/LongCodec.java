@@ -7,7 +7,6 @@ public class LongCodec {
     private long maxRaw;
     private long minDelta;
     private long maxDelta;
-    private BitCodec bitCodec = new BitCodec();
 
     public LongCodec(int rawBits, int deltaBits, long minRaw, long minDelta) {
         this.rawBits = rawBits;
@@ -33,22 +32,22 @@ public class LongCodec {
     }
 
     public int writeRawValue(byte[] buffer, long value, int offset) {
-        bitCodec.write(buffer, value - minRaw, offset, rawBits);
+        BitCodec.write(buffer, value - minRaw, offset, rawBits);
         return rawBits;
     }
 
     public long readRawValue(byte[] buffer, int offset) {
-        long value = bitCodec.read(buffer, offset, rawBits);
+        long value = BitCodec.read(buffer, offset, rawBits);
         return value + minRaw;
     }
 
     public int writeDeltaValue(byte[] buffer, long value, int offset) {
-        bitCodec.write(buffer, value - minDelta, offset, deltaBits);
+        BitCodec.write(buffer, value - minDelta, offset, deltaBits);
         return deltaBits;
     }
 
     public long readDeltaValue(byte[] buffer, int offset) {
-        long value = bitCodec.read(buffer, offset, deltaBits);
+        long value = BitCodec.read(buffer, offset, deltaBits);
         return value + minDelta;
     }
 }

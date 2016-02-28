@@ -4,7 +4,6 @@ import com.chimpler.simtick.codec.BitCodec;
 
 public class SimTickReader {
     private Reader[] readers;
-    private BitCodec bitCodec = new BitCodec();
     private boolean deltaEnabled;
     private boolean rowDelta;
 
@@ -18,13 +17,13 @@ public class SimTickReader {
         int offset = srcOffset;
         boolean isDelta = false;
         if (deltaEnabled && rowDelta) {
-            isDelta = bitCodec.read(buffer, offset++, 1) == 1;
+            isDelta = BitCodec.read(buffer, offset++, 1) == 1;
         }
 
         for (int i = 0; i < readers.length; i++) {
             Reader reader = readers[i];
             if (deltaEnabled && !rowDelta && !reader.fixed) {
-                isDelta = bitCodec.read(buffer, offset++, 1) == 1;
+                isDelta = BitCodec.read(buffer, offset++, 1) == 1;
             }
             ValueAndLength valueAndLength = isDelta ? reader.readDelta(buffer, offset) : reader.readRaw(buffer, offset);
             result[i] = valueAndLength.value;

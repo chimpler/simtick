@@ -2,20 +2,30 @@ package com.chimpler.simtick.writers;
 
 import com.chimpler.simtick.codec.BitCodec;
 
+import java.io.OutputStream;
+
 public class SimTickWriter {
+    public static final int DEFAULT_BUFFER_SIZE = 8096;
+
     private Writer[] writers;
-    private BitCodec bitCodec;
     private boolean deltaEnabled;
     private boolean rowDelta;
+    private OutputStream outputStream;
+    private byte[] buffer;
 
-    public SimTickWriter(Writer[] writers, boolean deltaEnabled, boolean rowDelta) {
-        this.writers = writers;
-        this.bitCodec = new BitCodec();
-        this.deltaEnabled = deltaEnabled;
-        this.rowDelta = rowDelta;
+    public SimTickWriter(Writer[] writers, OutputStream outputStream, boolean deltaEnabled, boolean rowDelta) {
+        this(writers, outputStream, deltaEnabled, rowDelta, DEFAULT_BUFFER_SIZE);
     }
 
-    private boolean isRowDelta(Object[] values) {
+    public SimTickWriter(Writer[] writers, OutputStream outputStream, boolean deltaEnabled, boolean rowDelta, int bufferSize) {
+        this.writers = writers;
+        this.deltaEnabled = deltaEnabled;
+        this.rowDelta = rowDelta;
+        this.outputStream = outputStream;
+        this.buffer = new byte[bufferSize];
+    }
+
+    protected boolean isRowDelta(Object[] values) {
         for (int i = 0; i < writers.length; i++) {
             Writer writer = writers[i];
             Object value = values[i];
@@ -26,15 +36,14 @@ public class SimTickWriter {
         return true;
     }
 
-    public int write(byte[] buffer, Object[] values, int srcOffset) {
-
+    public int writeValues(byte[] output, Object[] values, int srcOffset) {
         int offset = srcOffset;
         // check if all values can be delta-ed or not
         boolean isDelta;
 
         if (deltaEnabled && rowDelta) {
             isDelta = isRowDelta(values);
-            bitCodec.write(buffer, isDelta ? 1 : 0, offset++, 1);
+            BitCodec.write(output, isDelta ? 1 : 0, offset++, 1);
         }
 
         for (int i = 0; i < writers.length; i++) {
@@ -42,12 +51,12 @@ public class SimTickWriter {
             Object value = values[i];
             if (deltaEnabled && !rowDelta && !writer.fixed) {
                 isDelta = writer.isDelta(value);
-                bitCodec.write(buffer, isDelta ? 1 : 0, offset++, 1);
+                BitCodec.write(output, isDelta ? 1 : 0, offset++, 1);
             } else {
                 isDelta = false;
             }
 
-            offset += isDelta ? writer.writeDelta(buffer, value, offset) : writer.writeRaw(buffer, value, offset);
+            offset += isDelta ? writer.writeDelta(output, value, offset) : writer.writeRaw(output, value, offset);
         }
         return offset - srcOffset;
     }

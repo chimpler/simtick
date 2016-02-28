@@ -3,12 +3,14 @@ package com.chimpler.simtick.writers;
 import com.chimpler.simtick.codec.BitCodec;
 
 public class VarCharWriter extends Writer<String> {
-    private final BitCodec bitCodec;
-    private final int lenBits; // number of bits to encode the length
+    public static final byte TYPE_ID = 4;
 
-    public VarCharWriter(int maxChars) {
+    private final int lenBits; // number of bits to encode the length
+    private final short maxChars;
+
+    public VarCharWriter(short maxChars) {
         super(false);
-        this.bitCodec = new BitCodec();
+        this.maxChars = maxChars;
         this.lenBits = (int)Math.ceil(Math.log(maxChars) / Math.log(2));
     }
 
@@ -21,10 +23,10 @@ public class VarCharWriter extends Writer<String> {
         int strLen = value.length();
 
         // write length
-        bitCodec.write(buffer, strLen, offset, lenBits);
+        BitCodec.write(buffer, strLen, offset, lenBits);
 
         // write string
-        bitCodec.writeBytes(buffer, value.getBytes(), offset + lenBits);
+        BitCodec.writeBytes(buffer, value.getBytes(), offset + lenBits);
         return strLen * 8 + lenBits;
     }
 
@@ -36,5 +38,11 @@ public class VarCharWriter extends Writer<String> {
     @Override
     public int writeDelta(byte[] buffer, String value, int offset) {
         return this.writeValue(buffer, value, offset);
+    }
+
+    @Override
+    public int writerHeader(byte[] buffer, int offset) {
+        BitCodec.write(buffer, maxChars, offset, 16);
+        return 0;
     }
 }

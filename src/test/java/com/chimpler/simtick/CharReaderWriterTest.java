@@ -14,7 +14,7 @@ public class CharReaderWriterTest {
         String value2 = "CD";
         byte[] buffer = new byte[100];
         CharReader reader = new CharReader(2);
-        CharWriter writer = new CharWriter(2);
+        CharWriter writer = new CharWriter((short)2);
         writer.writeRaw(buffer, value1, 2);
         writer.writeDelta(buffer, value2, 18);
 

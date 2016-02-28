@@ -3,12 +3,12 @@ package com.chimpler.simtick.writers;
 import com.chimpler.simtick.codec.BitCodec;
 
 public class CharWriter extends Writer<String> {
-    private final BitCodec bitCodec;
-    private final int numChars;
+    public static final byte TYPE_ID = 3;
 
-    public CharWriter(int numChars) {
+    private final short numChars;
+
+    public CharWriter(short numChars) {
         super(true);
-        this.bitCodec = new BitCodec();
         this.numChars = numChars;
     }
 
@@ -18,7 +18,7 @@ public class CharWriter extends Writer<String> {
     }
 
     private int writeValue(byte[] buffer, String value, int offset) {
-        bitCodec.writeBytes(buffer, value.getBytes(), offset);
+        BitCodec.writeBytes(buffer, value.getBytes(), offset);
         return numChars * 8;
     }
 
@@ -31,4 +31,13 @@ public class CharWriter extends Writer<String> {
     public int writeDelta(byte[] buffer, String value, int offset) {
         return this.writeValue(buffer, value, offset);
     }
+
+    @Override
+    public int writerHeader(byte[] buffer, int srcOffset) {
+        int offset = srcOffset;
+        offset += BitCodec.write(buffer, TYPE_ID, offset, 7);
+        offset += BitCodec.write(buffer, numChars, offset, 15);
+        return offset - srcOffset;
+    }
+
 }

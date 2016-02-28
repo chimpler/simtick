@@ -8,14 +8,13 @@ import static org.junit.Assert.assertEquals;
 public class BitCodecTest {
     @Test
     public void testBitCodec() {
-        BitCodec bitCodec = new BitCodec();
         byte[] buffer = new byte[100];
 
-        bitCodec.write(buffer, 1L, 1, 1);
-        assertEquals(1L, bitCodec.read(buffer, 1, 1));
+        BitCodec.write(buffer, 1L, 1, 1);
+        assertEquals(1L, BitCodec.read(buffer, 1, 1));
 
-        bitCodec.write(buffer, 10278L, 15, 16);
-        assertEquals(10278L, bitCodec.read(buffer, 15, 16));
+        BitCodec.write(buffer, 10278L, 15, 16);
+        assertEquals(10278L, BitCodec.read(buffer, 15, 16));
 
     }
 }

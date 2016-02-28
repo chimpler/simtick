@@ -28,6 +28,7 @@ public class SimTickReaderWriterTest {
                         new LongWriter(0, 1000000, 0, 100),
                         new DateTimeWriter(minDate, maxDate, -20, 20, false)
                 },
+                null,
                 true,
                 true);
 
@@ -61,9 +62,9 @@ public class SimTickReaderWriterTest {
 
         byte[] buffer = new byte[100];
         int offset = 1;
-        offset += writer.write(buffer, row1, offset);
-        offset += writer.write(buffer, row2, offset);
-        writer.write(buffer, row3, offset);
+        offset += writer.writeValues(buffer, row1, offset);
+        offset += writer.writeValues(buffer, row2, offset);
+        writer.writeValues(buffer, row3, offset);
 
         Object[] resultRow1 = new Object[3];
         Object[] resultRow2 = new Object[3];

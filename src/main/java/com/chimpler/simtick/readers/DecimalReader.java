@@ -8,15 +8,15 @@ public class DecimalReader extends Reader<Double> {
     private Long oldValue;
     private double divFactor;
 
-    public DecimalReader(double minRaw, double maxRaw, int decimalMark) {
+    public DecimalReader(double minRaw, double maxRaw, byte decimalMark) {
         this(minRaw, maxRaw, true, 0, 0, decimalMark);
     }
 
-    public DecimalReader(double minRaw, double maxRaw, double minDelta, double maxDelta, int decimalMark) {
+    public DecimalReader(double minRaw, double maxRaw, double minDelta, double maxDelta, byte decimalMark) {
         this(minRaw, maxRaw, false, minDelta, maxDelta, decimalMark);
     }
 
-    private DecimalReader(double minRaw, double maxRaw, boolean fixed, double minDelta, double maxDelta, int decimalMark) {
+    private DecimalReader(double minRaw, double maxRaw, boolean fixed, double minDelta, double maxDelta, byte decimalMark) {
         super(fixed);
         this.divFactor = (int) Math.pow(10, decimalMark);
         this.codec = new CodecFactory().buildDeltaLongCodec(
