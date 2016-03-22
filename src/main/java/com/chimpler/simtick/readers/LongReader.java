@@ -1,10 +1,21 @@
 package com.chimpler.simtick.readers;
 
+import com.chimpler.simtick.codec.BitCodec;
 import com.chimpler.simtick.codec.CodecFactory;
 import com.chimpler.simtick.codec.LongCodec;
 
 public class LongReader extends Reader<Long> {
     private LongCodec codec;
+
+    public LongReader(byte[] buffer, int offset) {
+        this(
+                BitCodec.read(buffer, offset, 64),
+                BitCodec.read(buffer, offset + 64, 64),
+                BitCodec.read(buffer, offset + 129, 1) == 1,
+                BitCodec.read(buffer, offset + 197, 64),
+                BitCodec.read(buffer, offset + 257, 64)
+        );
+    }
 
     public LongReader(long minRaw, long maxRaw) {
         this(minRaw, maxRaw, true, 0, 0);

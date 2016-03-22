@@ -18,7 +18,6 @@ public class DecimalWriter extends Writer<Double> {
     private final double maxDelta;
     private final byte decimalMark;
 
-
     public DecimalWriter(double minRaw, double maxRaw, byte decimalMark) {
         this(minRaw, maxRaw, true, 0, 0, decimalMark);
     }
@@ -70,7 +69,6 @@ public class DecimalWriter extends Writer<Double> {
     @Override
     public int writerHeader(byte[] buffer, int srcOffset) {
         int offset = srcOffset;
-        offset += BitCodec.write(buffer, TYPE_ID, offset, 7);
         offset += BitCodec.write(buffer, (long)(minRaw * divFactor), offset, 64);
         offset += BitCodec.write(buffer, (long)(maxRaw * divFactor), offset, 64);
         offset += BitCodec.write(buffer, fixed ? 1:0, offset, 1);
@@ -78,5 +76,10 @@ public class DecimalWriter extends Writer<Double> {
         offset += BitCodec.write(buffer, (long)(maxDelta * divFactor), offset, 64);
         offset += BitCodec.write(buffer, decimalMark, offset, 7);
         return offset - srcOffset;
+    }
+
+    @Override
+    public int getMaxSize() {
+        return codec.rawBits;
     }
 }

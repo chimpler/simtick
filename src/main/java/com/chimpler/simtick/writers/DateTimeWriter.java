@@ -66,7 +66,6 @@ public class DateTimeWriter extends Writer<DateTime> {
     @Override
     public int writerHeader(byte[] buffer, int srcOffset) {
         int offset = srcOffset;
-        offset += BitCodec.write(buffer, TYPE_ID, offset, 7);
         offset += BitCodec.write(buffer, isMillis ? 1:0, offset, 1);
         offset += BitCodec.write(buffer, minDate.getMillis() / divFactor, offset, 64);
         offset += BitCodec.write(buffer, maxDate.getMillis() / divFactor, offset, 64);
@@ -74,5 +73,10 @@ public class DateTimeWriter extends Writer<DateTime> {
         offset += BitCodec.write(buffer, minDeltaValues, offset, 32);
         offset += BitCodec.write(buffer, maxDeltaValues, offset, 32);
         return offset - srcOffset;
+    }
+
+    @Override
+    public int getMaxSize() {
+        return this.codec.rawBits;
     }
 }

@@ -35,9 +35,12 @@ public class CharWriter extends Writer<String> {
     @Override
     public int writerHeader(byte[] buffer, int srcOffset) {
         int offset = srcOffset;
-        offset += BitCodec.write(buffer, TYPE_ID, offset, 7);
         offset += BitCodec.write(buffer, numChars, offset, 15);
         return offset - srcOffset;
     }
 
+    @Override
+    public int getMaxSize() {
+        return numChars * 8;
+    }
 }

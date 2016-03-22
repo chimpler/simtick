@@ -45,4 +45,9 @@ public class VarCharWriter extends Writer<String> {
         BitCodec.write(buffer, maxChars, offset, 16);
         return 0;
     }
+
+    @Override
+    public int getMaxSize() {
+        return lenBits + maxChars * 8;
+    }
 }

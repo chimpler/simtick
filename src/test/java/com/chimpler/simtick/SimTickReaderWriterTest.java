@@ -11,6 +11,10 @@ import com.chimpler.simtick.writers.Writer;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import static org.junit.Assert.assertArrayEquals;
 
 public class SimTickReaderWriterTest {
@@ -78,5 +82,42 @@ public class SimTickReaderWriterTest {
         assertArrayEquals(row1, resultRow1);
         assertArrayEquals(row2, resultRow2);
         assertArrayEquals(row3, resultRow3);
+    }
+
+    public void testReadWriteStream() throws IOException {
+        DateTime now = new DateTime().withMillisOfSecond(0);
+        DateTime later1 = now.plusSeconds(2);
+        DateTime later2 = now.plusSeconds(3);
+        DateTime minDate = new DateTime(2000, 1, 1, 0, 0);
+        DateTime maxDate = new DateTime(2020, 1, 1, 0, 0);
+
+        SimTickWriter writer = new SimTickWriter(
+                new Writer[]{
+                        new LongWriter(0, 1000000, 0, 100),
+                        new LongWriter(0, 1000000, 0, 100),
+                        new DateTimeWriter(minDate, maxDate, -20, 20, false)
+                },
+                null,
+                true,
+                true);
+        byte[] result = new byte[1000];
+        OutputStream os = new ByteArrayOutputStream(1000);
+
+        Object[] row1 = new Object[]{
+                15321L,
+                1221L,
+                now
+        };
+
+        Object[] row2 = new Object[]{
+                15323L,
+                1223L,
+                later1
+        };
+
+        writer.write(row1);
+        writer.write(row2);
+
+
     }
 }
