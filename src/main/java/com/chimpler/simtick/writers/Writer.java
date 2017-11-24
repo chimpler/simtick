@@ -13,4 +13,6 @@ public abstract class Writer<T> {
     public abstract int writerHeader(byte[] buffer, int offset);
 
     public abstract int getMaxSize();
+
+    public abstract int getTypeId();
 }

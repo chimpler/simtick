@@ -4,13 +4,15 @@ public abstract class Reader<T> {
     // reuse same object to avoid reinstantiation every time
     protected final ValueAndLength<T> valueAndLength;
     public final boolean fixed;
+    public final int headerSize;
 
     public abstract ValueAndLength<T> readRaw(byte[] buffer, int offset);
 
     public abstract ValueAndLength<T> readDelta(byte[] buffer, int offset);
 
-    Reader(boolean fixed) {
+    Reader(boolean fixed, int headerSize) {
         this.fixed = fixed;
+        this.headerSize = headerSize;
         valueAndLength = new ValueAndLength();
     }
 }

@@ -17,7 +17,7 @@ public class DecimalReader extends Reader<Double> {
     }
 
     private DecimalReader(double minRaw, double maxRaw, boolean fixed, double minDelta, double maxDelta, byte decimalMark) {
-        super(fixed);
+        super(fixed, 50);
         this.divFactor = (int) Math.pow(10, decimalMark);
         this.codec = new CodecFactory().buildDeltaLongCodec(
                 (long) (minRaw * divFactor),

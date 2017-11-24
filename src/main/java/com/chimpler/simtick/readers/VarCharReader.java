@@ -7,7 +7,7 @@ public class VarCharReader extends Reader<String> {
     private final int lenBits; // number of bits to encode the length
 
     public VarCharReader(short maxChars) {
-        super(false);
+        super(false, 40);
         this.lenBits = (int) Math.ceil(Math.log(maxChars) / Math.log(2));
         this.tmpBuffer = new byte[maxChars];
     }

@@ -69,23 +69,37 @@ public class SimTickWriter {
 
     public int writeHeader(byte[] output, int srcOffset) {
         int offset = srcOffset;
-        offset += BitCodec.write(output, Version.DataVersion, srcOffset, 16);
-        offset += BitCodec.write(output, writers.length, srcOffset, 8);
+        offset += BitCodec.write(output, Version.DataVersion, offset, 16);
+        offset += BitCodec.write(output, writers.length, offset, 8);
         for (Writer writer: writers) {
-            offset += writer.writerHeader(output, srcOffset);
+            offset += BitCodec.write(output, writer.getTypeId(), offset, 8);
+            offset += writer.writerHeader(output, offset);
+            System.out.println("writeOffset=======> " + offset);
         }
         return offset - srcOffset;
+    }
+
+    public int writeHeader(byte[] output) {
+        return writeHeader(output, 0);
     }
 
     public int write(Object[] values) throws IOException {
         int len = writeValues(buffer, values, bufferOffset);
         bufferOffset += len;
         if (bufferOffset > buffer.length - maxSize) {
-            outputStream.write(buffer, 0, bufferOffset);
-            bufferOffset = 0;
+            flush();
         }
-
         return len;
+    }
+
+    public void flush() throws IOException {
+        outputStream.write(buffer, 0, bufferOffset);
+        bufferOffset = 0;
+    }
+
+    public void close() throws IOException {
+        flush();
+        outputStream.close();
     }
 
     private int computeMaxSize() {

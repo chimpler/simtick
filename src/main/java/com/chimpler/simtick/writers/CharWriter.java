@@ -43,4 +43,9 @@ public class CharWriter extends Writer<String> {
     public int getMaxSize() {
         return numChars * 8;
     }
+
+    @Override
+    public int getTypeId() {
+        return TYPE_ID;
+    }
 }

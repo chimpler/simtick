@@ -58,13 +58,18 @@ public class LongWriter extends Writer<Long> {
         offset += BitCodec.write(buffer, minRaw, offset, 64);
         offset += BitCodec.write(buffer, maxRaw, offset, 64);
         offset += BitCodec.write(buffer, fixed ? 1:0, offset, 1);
-        offset += BitCodec.write(buffer, minDelta, offset, 64);
-        offset += BitCodec.write(buffer, maxDelta, offset, 64);
+        offset += BitCodec.write(buffer, minDelta, offset, 32);
+        offset += BitCodec.write(buffer, maxDelta, offset, 32);
         return offset - srcOffset;
     }
 
     @Override
     public int getMaxSize() {
         return longCodec.rawBits;
+    }
+
+    @Override
+    public int getTypeId() {
+        return TYPE_ID;
     }
 }

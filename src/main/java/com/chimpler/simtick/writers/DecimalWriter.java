@@ -82,4 +82,9 @@ public class DecimalWriter extends Writer<Double> {
     public int getMaxSize() {
         return codec.rawBits;
     }
+
+    @Override
+    public int getTypeId() {
+        return TYPE_ID;
+    }
 }

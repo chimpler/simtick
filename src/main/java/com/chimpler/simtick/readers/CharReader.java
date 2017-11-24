@@ -4,17 +4,19 @@ import com.chimpler.simtick.codec.BitCodec;
 
 public class CharReader extends Reader<String> {
     private final int numChars;
-    private final byte[] tmpBuffer;
+
+    public CharReader(byte[] buffer, int offset) {
+        this((int)BitCodec.read(buffer, offset, 64));
+    }
 
     public CharReader(int numChars) {
-        super(true);
+        super(true, 2);
         this.numChars = numChars;
-        this.tmpBuffer = new byte[numChars];
     }
 
     private ValueAndLength<String> readValue(byte[] buffer, int offset) {
         return this.valueAndLength.withValueAndLength(
-                new String(BitCodec.readBytes(buffer, offset, tmpBuffer, numChars), 0, numChars),
+                new String(BitCodec.readBytes(buffer, offset, buffer, numChars), 0, numChars),
                 numChars * 8
         );
     }
@@ -27,5 +29,10 @@ public class CharReader extends Reader<String> {
     @Override
     public ValueAndLength<String> readDelta(byte[] buffer, int offset) {
         return readValue(buffer, offset);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[CharReader numChars=%d]", numChars);
     }
 }

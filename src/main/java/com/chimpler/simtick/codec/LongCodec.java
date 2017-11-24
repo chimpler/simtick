@@ -50,4 +50,90 @@ public class LongCodec {
         long value = BitCodec.read(buffer, offset, deltaBits);
         return value + minDelta;
     }
+
+    public int getRawBits() {
+        return rawBits;
+    }
+
+    public void setRawBits(int rawBits) {
+        this.rawBits = rawBits;
+    }
+
+    public int getDeltaBits() {
+        return deltaBits;
+    }
+
+    public void setDeltaBits(int deltaBits) {
+        this.deltaBits = deltaBits;
+    }
+
+    public long getMinRaw() {
+        return minRaw;
+    }
+
+    public void setMinRaw(long minRaw) {
+        this.minRaw = minRaw;
+    }
+
+    public long getMaxRaw() {
+        return maxRaw;
+    }
+
+    public void setMaxRaw(long maxRaw) {
+        this.maxRaw = maxRaw;
+    }
+
+    public long getMinDelta() {
+        return minDelta;
+    }
+
+    public void setMinDelta(long minDelta) {
+        this.minDelta = minDelta;
+    }
+
+    public long getMaxDelta() {
+        return maxDelta;
+    }
+
+    public void setMaxDelta(long maxDelta) {
+        this.maxDelta = maxDelta;
+    }
+
+    @Override
+    public String toString() {
+        return "LongCodec{" +
+                "rawBits=" + rawBits +
+                ", deltaBits=" + deltaBits +
+                ", minRaw=" + minRaw +
+                ", maxRaw=" + maxRaw +
+                ", minDelta=" + minDelta +
+                ", maxDelta=" + maxDelta +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LongCodec longCodec = (LongCodec) o;
+
+        if (rawBits != longCodec.rawBits) return false;
+        if (deltaBits != longCodec.deltaBits) return false;
+        if (minRaw != longCodec.minRaw) return false;
+        if (maxRaw != longCodec.maxRaw) return false;
+        if (minDelta != longCodec.minDelta) return false;
+        return maxDelta == longCodec.maxDelta;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = rawBits;
+        result = 31 * result + deltaBits;
+        result = 31 * result + (int) (minRaw ^ (minRaw >>> 32));
+        result = 31 * result + (int) (maxRaw ^ (maxRaw >>> 32));
+        result = 31 * result + (int) (minDelta ^ (minDelta >>> 32));
+        result = 31 * result + (int) (maxDelta ^ (maxDelta >>> 32));
+        return result;
+    }
 }
